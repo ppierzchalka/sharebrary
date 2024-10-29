@@ -1,4 +1,5 @@
 import './global.css';
+import { Header } from '@/ui';
 
 export const metadata = {
   title: 'Welcome to sharebrary',
@@ -12,7 +13,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <div className="min-h-screen bg-background text-foreground flex flex-col">
+          <Header />
+          {children}
+          <footer className="border-t py-4 text-center text-sm text-muted-foreground">
+            made with <span className="text-primary">♥</span> by przemo
+          </footer>
+        </div>
+      </body>
     </html>
   );
 }

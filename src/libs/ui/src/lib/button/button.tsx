@@ -5,6 +5,7 @@ export interface ButtonProps {
   size?: 'sm' | 'md' | 'lg';
   children: React.ReactNode;
   onClick?: () => void;
+  className?: string;
 }
 
 export const Button = ({
@@ -12,6 +13,7 @@ export const Button = ({
   size = 'md',
   children,
   onClick,
+  className,
 }: ButtonProps) => {
   const baseStyles = 'rounded-md font-semibold transition-colors';
 
@@ -28,7 +30,7 @@ export const Button = ({
 
   return (
     <button
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
+      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
       onClick={onClick}
     >
       {children}
