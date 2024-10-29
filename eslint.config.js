@@ -1,3 +1,4 @@
+const baseConfig = require('./eslint.base.config.js');
 const { FlatCompat } = require('@eslint/eslintrc');
 const js = require('@eslint/js');
 const { fixupConfigRules } = require('@eslint/compat');
@@ -9,13 +10,11 @@ const compat = new FlatCompat({
 });
 
 module.exports = [
+  ...baseConfig,
+
   ...fixupConfigRules(compat.extends('next')),
 
   ...fixupConfigRules(compat.extends('next/core-web-vitals')),
-
-  ...nx.configs['flat/base'],
-  ...nx.configs['flat/typescript'],
-  ...nx.configs['flat/javascript'],
   {
     ignores: ['**/dist'],
   },
