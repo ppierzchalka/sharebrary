@@ -1,82 +1,77 @@
 # Sharebrary
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+![Sharebrary Banner](https://placehold.co/600x200/333/fff?text=Sharebrary)
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+## 📚 About
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/next?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+Sharebrary is a modern ebook sharing platform that enables users to upload, discover, and download ebooks while building a community around shared literary interests. Think of it as a community library where everyone can contribute their digital books and benefit from others' collections.
 
-## Finish your CI setup
+Designed as a white-label solution, Sharebrary can be easily customized with your own branding, theme colors, and content to create your unique library platform.
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/pEV1tdA1Yx)
+## ✨ Features
 
+### 📖 For Readers
 
-## Run tasks
+- **Discover Books**: Browse a diverse collection of ebooks with an intuitive masonry layout
+- **Smart Search**: Find books by title, author, or within descriptions with responsive search
+- **Organized Collections**: Filter books by categories and tags to find exactly what you're looking for
+- **Personalized Experience**: Save favorites for quick access to books you love
+- **Download History**: Keep track of books you've downloaded for future reference
+- **Book Insights**: View detailed information about each book including user ratings and comments
 
-To run the dev server for your app, use:
+### 📤 For Contributors
 
-```sh
-npx nx dev sharebrary
-```
+- **Easy Uploads**: Share your ebooks with the community through a simple upload form
+- **Automatic Metadata**: Our smart system automatically fetches book details, saving you time
+- **AI-Powered Categorization**: Books are automatically tagged and categorized using Google Books API and AI
 
-To create a production bundle:
+### 👥 Community Features
 
-```sh
-npx nx build sharebrary
-```
+- **Comments & Discussions**: Share your thoughts about books with other members
+- **Ratings System**: Rate books to help others find quality reads
+- **Curated Collections**: Find books highly rated by the community
 
-To see all available targets to run for a project, run:
+### 👮‍♀️ Security & Privacy
 
-```sh
-npx nx show project sharebrary
-```
+- **Verified Users**: All accounts are manually approved by administrators
+- **Multiple Sign-in Options**: Log in with Google, Facebook, or email
+- **Secure Downloads**: All book downloads are protected and tracked
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+### 🎨 White-Labeling
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- **Custom Branding**: Replace logos, colors, and names to match your brand
+- **Theme Customization**: Adjust the look and feel with a simple configuration file
+- **Flexible Footer**: Customize footer text and links
+- **Multiple Deployment Options**: Run as a multi-tenant service or create separate branded instances
 
-## Add new projects
+## 🔜 Coming Soon
 
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
+- **Reading List**: Create and manage reading lists
+- **Recommendations**: Personalized book recommendations based on your reading history
+- **Mobile App**: Access your ebooks on the go
+- **Social Sharing**: Share your favorite books on social media
 
-Use the plugin's generator to create new projects.
+## 🔧 Technology
 
-To generate a new application, use:
+Sharebrary is built with modern technologies:
 
-```sh
-npx nx g @nx/next:app demo
-```
+- **Frontend**: Next.js, React, TailwindCSS
+- **Backend**: Firebase (Authentication, Firestore, Storage, Functions)
+- **APIs**: Google Books API, Gemini AI
+- **Architecture**: Nx monorepo for maintainable code organization
 
-To generate a new library, use:
+## 🚀 Getting Started
 
-```sh
-npx nx g @nx/react:lib mylib
-```
+Sharebrary is currently under development, but you can explore the project structure in the `docs` folder to learn more about our technical architecture and implementation plans.
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+## 👥 Contributing
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+We welcome contributions to Sharebrary! Whether you're fixing bugs, adding features, or improving documentation, your help is appreciated. Check out our [contributor guidelines](docs/CONTRIBUTING.md) for more information.
 
+## 📄 License
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Sharebrary is licensed under the MIT License - see the LICENSE file for details.
 
-## Install Nx Console
+---
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/nx-api/next?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Built with ❤️ for book lovers everywhere

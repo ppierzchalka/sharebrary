@@ -5,6 +5,20 @@ import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react(), nxViteTsPaths()],
+  build: {
+    target: 'esnext',
+    modulePreload: false,
+    rollupOptions: {
+      output: {
+        format: 'esm',
+      },
+    },
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      target: 'esnext',
+    },
+  },
   test: {
     globals: true,
     environment: 'jsdom',

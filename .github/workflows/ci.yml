@@ -13,6 +13,10 @@ permissions:
 jobs:
   main:
     runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: '--experimental-vm-modules --no-warnings'
+      VITE_CJS_IGNORE_WARNING: 'true'
+      VITE_CJS_TRACE_WARNING: 'false'
     steps:
       - uses: actions/checkout@v4
         with:

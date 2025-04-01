@@ -36,6 +36,18 @@ const config: StorybookConfig = {
       },
       optimizeDeps: {
         include: ['react', 'react-dom'],
+        esbuildOptions: {
+          target: 'esnext',
+        },
+      },
+      build: {
+        target: 'esnext',
+        modulePreload: false,
+        rollupOptions: {
+          output: {
+            format: 'esm',
+          },
+        },
       },
     });
   },

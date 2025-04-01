@@ -12,6 +12,21 @@ export default defineConfig({
   // worker: {
   //  plugins: [ nxViteTsPaths() ],
   // },
+  build: {
+    target: 'esnext',
+    modulePreload: false,
+    rollupOptions: {
+      output: {
+        format: 'esm',
+      },
+    },
+  },
+  // Add optimizeDeps to ensure ESM compatibility
+  optimizeDeps: {
+    esbuildOptions: {
+      target: 'esnext',
+    },
+  },
   test: {
     watch: false,
     globals: true,
