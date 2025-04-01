@@ -20,6 +20,8 @@ export function BookCard({
     <div className="bg-card text-card-foreground rounded-lg overflow-hidden shadow-md">
       <Image
         src={cover}
+        width={200}
+        height={300}
         alt={title}
         className="w-full h-48 object-cover"
         data-testid="next-image"

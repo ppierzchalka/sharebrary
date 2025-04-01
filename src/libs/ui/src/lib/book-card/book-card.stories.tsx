@@ -11,7 +11,7 @@ export default meta;
 type Story = StoryObj<typeof BookCard>;
 
 const defaultArgs = {
-  cover: '/placeholder.svg?height=300&width=200',
+  cover: '/images/image.png',
   title: 'The Midnight Library',
   author: 'Matt Haig',
   tags: ['fiction', 'fantasy', 'bestseller'],
