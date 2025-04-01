@@ -8,7 +8,10 @@
     "build": "nx build",
     "start": "nx start",
     "test": "nx test",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "ci:lint": "nx affected -t lint --base=$NX_BASE --head=$NX_HEAD",
+    "ci:test": "nx affected -t test --base=$NX_BASE --head=$NX_HEAD",
+    "ci:build": "nx affected -t build --base=$NX_BASE --head=$NX_HEAD"
   },
   "private": true,
   "dependencies": {

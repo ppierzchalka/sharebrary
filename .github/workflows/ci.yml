@@ -12,15 +12,12 @@ permissions:
 
 jobs:
   main:
-    name: Nx Cloud Main Job
+    name: Build and Test
     runs-on: ubuntu-latest
     env:
       NODE_OPTIONS: '--experimental-vm-modules --no-warnings'
       VITE_CJS_IGNORE_WARNING: 'true'
       VITE_CJS_TRACE_WARNING: 'false'
-      NX_VERBOSE_LOGGING: 'true'
-      NX_CLOUD_DISTRIBUTED_EXECUTION: 'true'
-      NX_NON_CACHEABLE_TASKS: '*'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -39,48 +36,26 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Initialize Nx Cloud
-        run: pnpm dlx nx-cloud start-ci-run --distributes-on="6 linux-medium-js" --stop-agents-after="build"
-
-      - name: Set SHAs for base and head
-        uses: nrwl/nx-set-shas@v4
+      - name: Set SHAs for base and head for affected commands
+        id: setSHAs
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "Setting SHAs for PR"
+            echo "NX_BASE=origin/${{ github.base_ref }}" >> $GITHUB_ENV
+            echo "NX_HEAD=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
+          else
+            echo "Setting SHAs for push"
+            echo "NX_BASE=origin/main~1" >> $GITHUB_ENV
+            echo "NX_HEAD=${{ github.sha }}" >> $GITHUB_ENV
+          fi
 
       # Run each command separately to isolate failures
       - name: Lint affected projects
-        run: pnpm exec nx affected -t lint --parallel=3
+        run: pnpm run ci:lint
 
       - name: Test affected projects
-        run: pnpm exec nx affected -t test --parallel=3
+        run: pnpm run ci:test
 
       - name: Build affected projects
-        run: pnpm exec nx affected -t build --parallel=3
-
-  agents:
-    name: Nx Cloud Agent
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    strategy:
-      matrix:
-        agent: [1, 2, 3, 4, 5, 6]
-    env:
-      NODE_OPTIONS: '--experimental-vm-modules --no-warnings'
-      VITE_CJS_IGNORE_WARNING: 'true'
-      VITE_CJS_TRACE_WARNING: 'false'
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Start Nx Agent ${{ matrix.agent }}
-        run: pnpm dlx nx-cloud start-agent
+        run: pnpm run ci:build
