@@ -1,7 +1,7 @@
 import React from 'react';
 
 export interface ButtonProps {
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'outline';
   size?: 'sm' | 'md' | 'lg';
   children: React.ReactNode;
   onClick?: () => void;
@@ -20,6 +20,7 @@ export const Button = ({
   const variants = {
     primary: 'bg-blue-500 text-white hover:bg-blue-600',
     secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300',
+    outline: 'border border-gray-300 hover:bg-gray-100',
   };
 
   const sizes = {
@@ -32,6 +33,7 @@ export const Button = ({
     <button
       className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
       onClick={onClick}
+      data-variant={variant}
     >
       {children}
     </button>

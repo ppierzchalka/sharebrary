@@ -14,7 +14,7 @@ describe('BookCard', () => {
     render(<BookCard {...mockProps} />);
 
     // Check if all elements are rendered
-    expect(screen.getByAltText('Test Book')).toBeInTheDocument();
+    expect(screen.getByTestId('next-image')).toBeInTheDocument();
     expect(screen.getByText('Test Book')).toBeInTheDocument();
     expect(screen.getByText('Test Author')).toBeInTheDocument();
     expect(screen.getByText('tag1')).toBeInTheDocument();
@@ -24,8 +24,12 @@ describe('BookCard', () => {
 
   it('renders image with correct src and alt', () => {
     render(<BookCard {...mockProps} />);
-    const image = screen.getByAltText('Test Book') as HTMLImageElement;
-    expect(image.src).toContain('/test-cover.jpg');
+    const image = screen.getByTestId('next-image');
+    expect(image).toHaveAttribute('alt', 'Test Book');
+    expect(image).toHaveAttribute(
+      'src',
+      expect.stringContaining('/test-cover.jpg')
+    );
   });
 
   it('renders all tags as badges', () => {

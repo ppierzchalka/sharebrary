@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import { Header } from './header';
-import userEvent from '@testing-library/user-event';
 
 describe('Header', () => {
   it('renders the logo text', () => {
@@ -22,8 +21,10 @@ describe('Header', () => {
     render(<Header />);
 
     // Check if all icons are present
-    const icons = screen.getAllByRole('img', { hidden: true });
-    expect(icons).toHaveLength(4); // BookOpen, Heart, Calendar, Plus
+    expect(screen.getByTestId('book-icon')).toBeInTheDocument();
+    expect(screen.getByTestId('heart-icon')).toBeInTheDocument();
+    expect(screen.getByTestId('calendar-icon')).toBeInTheDocument();
+    expect(screen.getByTestId('plus-icon')).toBeInTheDocument();
   });
 
   it('applies correct styling to the header', () => {
@@ -38,14 +39,14 @@ describe('Header', () => {
     expect(shareButton).toHaveClass('bg-primary', 'text-primary-foreground');
   });
 
-  it('applies ghost variant to navigation buttons except Share', () => {
+  it('applies secondary variant to navigation buttons except Share', () => {
     render(<Header />);
     const libraryButton = screen.getByText('Library').closest('button');
     const favouritesButton = screen.getByText('Favourites').closest('button');
     const historyButton = screen.getByText('History').closest('button');
 
     [libraryButton, favouritesButton, historyButton].forEach((button) => {
-      expect(button).toHaveAttribute('data-variant', 'ghost');
+      expect(button).toHaveClass('bg-gray-200', 'text-gray-800');
     });
   });
 

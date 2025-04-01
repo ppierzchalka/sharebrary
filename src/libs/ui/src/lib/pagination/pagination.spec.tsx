@@ -16,14 +16,15 @@ describe('Pagination', () => {
   });
 
   it('applies correct styling classes', () => {
-    render(<Pagination />);
-    const container = screen.getByRole('navigation');
-    expect(container).toHaveClass('mt-8', 'flex', 'justify-center');
+    const { container } = render(<Pagination />);
+    const paginationContainer = container.firstChild;
+    expect(paginationContainer).toHaveClass('mt-8', 'flex', 'justify-center');
   });
 
   it('applies outline variant to all buttons', () => {
     render(<Pagination />);
     const buttons = screen.getAllByRole('button');
+
     buttons.forEach((button) => {
       expect(button).toHaveAttribute('data-variant', 'outline');
     });

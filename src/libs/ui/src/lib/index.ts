@@ -4,5 +4,6 @@ export * from './button';
 export * from './header';
 export * from './input';
 export * from './pagination';
+export * from './providers';
 export * from './sidebar';
 export * from './utils';

@@ -1,5 +1,5 @@
-import './global.css';
-import { Header } from '@/ui';
+import '@/ui/styles/global.css';
+import { Header, inter } from '@/ui';
 
 export const metadata = {
   title: 'Welcome to sharebrary',
@@ -12,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={inter.variable}>
       <body>
         <div className="min-h-screen bg-background text-foreground flex flex-col">
           <Header />

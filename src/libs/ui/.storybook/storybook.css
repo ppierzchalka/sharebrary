@@ -1,0 +1,17 @@
+/* Ensure fonts work in Storybook environment */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+.sb-show-main,
+#storybook-root,
+#storybook-preview-wrapper {
+  font-family: var(--font-sans);
+}

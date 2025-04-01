@@ -2,7 +2,7 @@ import { Button } from '../button/button';
 
 export function Pagination() {
   return (
-    <div className="mt-8 flex justify-center">
+    <div className="mt-8 flex justify-center" role="navigation">
       <Button variant="outline" className="mr-2">
         Previous
       </Button>
