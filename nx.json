@@ -20,14 +20,24 @@
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
-      "cache": true
+      "cache": true,
+      "inputs": ["production", "^production"]
     },
     "test": {
-      "cache": true
+      "cache": true,
+      "inputs": ["default", "^production"]
     },
     "lint": {
-      "cache": true
+      "cache": true,
+      "inputs": [
+        "default",
+        "{workspaceRoot}/.eslint*",
+        "{workspaceRoot}/**/eslint.*"
+      ]
     }
+  },
+  "cliOptions": {
+    "useInferredBaseAndHead": true
   },
   "nxCloudId": "671585bde5ba940538f5345e",
   "plugins": [

@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react-swc';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
-import { resolve } from 'path';
+import path from 'path';
 
 export default defineConfig({
   plugins: [react(), nxViteTsPaths()],
@@ -13,11 +13,15 @@ export default defineConfig({
         format: 'esm',
       },
     },
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
   },
   optimizeDeps: {
     esbuildOptions: {
       target: 'esnext',
     },
+    include: ['react', 'react-dom'],
   },
   test: {
     globals: true,
@@ -33,7 +37,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': resolve(__dirname, './src'),
+      '@': path.resolve(__dirname, './src'),
     },
   },
 });

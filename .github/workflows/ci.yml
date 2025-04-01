@@ -12,11 +12,15 @@ permissions:
 
 jobs:
   main:
+    name: Nx Cloud Main Job
     runs-on: ubuntu-latest
     env:
       NODE_OPTIONS: '--experimental-vm-modules --no-warnings'
       VITE_CJS_IGNORE_WARNING: 'true'
       VITE_CJS_TRACE_WARNING: 'false'
+      NX_VERBOSE_LOGGING: 'true'
+      NX_CLOUD_DISTRIBUTED_EXECUTION: 'true'
+      NX_NON_CACHEABLE_TASKS: '*'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,21 +30,57 @@ jobs:
         with:
           version: 9
 
-      # This enables task distribution via Nx Cloud
-      # Run this command as early as possible, before dependencies are installed
-      # Learn more at https://nx.dev/ci/reference/nx-cloud-cli#npx-nxcloud-startcirun
-      - run: pnpm dlx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="build"
-
-      # Cache node_modules
-      - uses: actions/setup-node@v4
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
 
-      - run: pnpm install --frozen-lockfile
-      - uses: nrwl/nx-set-shas@v4
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      # Prepend any command with "nx-cloud record --" to record its logs to Nx Cloud
-      # - run: pnpm exec nx-cloud record -- echo Hello World
-      # Nx Affected runs only tasks affected by the changes in this PR/commit. Learn more: https://nx.dev/ci/features/affected
-      - run: pnpm exec nx affected -t lint test build
+      - name: Initialize Nx Cloud
+        run: pnpm dlx nx-cloud start-ci-run --distributes-on="6 linux-medium-js" --stop-agents-after="build"
+
+      - name: Set SHAs for base and head
+        uses: nrwl/nx-set-shas@v4
+
+      # Run each command separately to isolate failures
+      - name: Lint affected projects
+        run: pnpm exec nx affected -t lint --parallel=3
+
+      - name: Test affected projects
+        run: pnpm exec nx affected -t test --parallel=3
+
+      - name: Build affected projects
+        run: pnpm exec nx affected -t build --parallel=3
+
+  agents:
+    name: Nx Cloud Agent
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        agent: [1, 2, 3, 4, 5, 6]
+    env:
+      NODE_OPTIONS: '--experimental-vm-modules --no-warnings'
+      VITE_CJS_IGNORE_WARNING: 'true'
+      VITE_CJS_TRACE_WARNING: 'false'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Start Nx Agent ${{ matrix.agent }}
+        run: pnpm dlx nx-cloud start-agent
