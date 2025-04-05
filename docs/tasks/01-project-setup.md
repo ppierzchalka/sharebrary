@@ -15,50 +15,50 @@ This task involves setting up the Nx monorepo with Next.js, configuring Firebase
 
 ### 1. Nx Monorepo Setup
 
-- [ ] Initialize the Nx workspace
+- [x] Initialize the Nx workspace
 
   ```bash
   npx create-nx-workspace@latest sharebrary --preset=next
   ```
 
-- [ ] Navigate to the project directory
+- [x] Navigate to the project directory
 
   ```bash
   cd sharebrary
   ```
 
-- [ ] Install necessary dependencies
+- [x] Install necessary dependencies
 
   ```bash
   npm install tailwindcss postcss autoprefixer shadcn-ui @nx/next @nx/react
   ```
 
-- [ ] Configure ESLint and Prettier
+- [x] Configure ESLint and Prettier
 
   ```bash
   npm install -D eslint-config-prettier eslint-plugin-prettier
   ```
 
-- [ ] Update `.eslintrc.json` with proper configuration
+- [x] Update `.eslintrc.json` with proper configuration
 
-- [ ] Create Nx libraries for code organization
+- [x] Create Nx libraries for code organization
   ```bash
-  nx g @nx/react:lib ui --directory=libs/ui
-  nx g @nx/react:lib auth --directory=libs/auth
-  nx g @nx/react:lib features --directory=libs/features
-  nx g @nx/react:lib api --directory=libs/api
-  nx g @nx/react:lib utils --directory=libs/utils
+  nx g @nx/react:lib ui --directory=src/libs/ui
+  nx g @nx/react:lib auth --directory=src/libs/auth
+  nx g @nx/react:lib features --directory=src/libs/features
+  nx g @nx/react:lib api --directory=src/libs/api
+  nx g @nx/react:lib utils --directory=src/libs/utils
   ```
 
 ### 2. TailwindCSS Setup
 
-- [ ] Initialize TailwindCSS
+- [x] Initialize TailwindCSS
 
   ```bash
   nx g @nx/react:setup-tailwind --project=web
   ```
 
-- [ ] Create a TailwindCSS configuration file with theme tokens
+- [x] Create a TailwindCSS configuration file with theme tokens
 
   ```js
   // tailwind.config.js
@@ -73,7 +73,7 @@ This task involves setting up the Nx monorepo with Next.js, configuring Firebase
   };
   ```
 
-- [ ] Set up shadcn/ui component library
+- [x] Set up shadcn/ui component library
   ```bash
   npx shadcn-ui@latest init
   ```

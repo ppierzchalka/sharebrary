@@ -16,7 +16,11 @@
     "baseUrl": ".",
     "paths": {
       "@/ui": ["src/libs/ui/src/index.ts"],
-      "@/ui/server": ["src/libs/ui/src/server.ts"]
+      "@/ui/server": ["src/libs/ui/src/server.ts"],
+      "@sharebrary/api": ["src/libs/api/src/index.ts"],
+      "@sharebrary/auth": ["src/libs/auth/src/index.ts"],
+      "@sharebrary/features": ["src/libs/features/src/index.ts"],
+      "@sharebrary/utils": ["src/libs/utils/src/index.ts"]
     }
   },
   "exclude": [
