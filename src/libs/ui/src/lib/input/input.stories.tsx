@@ -1,8 +1,26 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Input } from './input';
 
+/**
+ * The Input component is a foundational form element for collecting user data.
+ *
+ * It supports various HTML input types and states to accommodate different data collection needs:
+ * - Text inputs for general text entry
+ * - Email inputs with appropriate validation patterns
+ * - Password inputs with masked characters
+ * - Number inputs for numerical data
+ * - Search inputs for search functionality
+ * - File inputs for uploading files
+ * - Date and time inputs for temporal data
+ *
+ * The component can be customized with different states including:
+ * - Default state for normal input
+ * - Disabled state for non-interactive inputs
+ * - Required state for mandatory fields
+ * - Error state for validation feedback
+ */
 const meta: Meta<typeof Input> = {
-  title: 'Components/Input',
+  title: 'Base Components/Input',
   component: Input,
   tags: ['autodocs'],
   parameters: {
@@ -51,12 +69,20 @@ const meta: Meta<typeof Input> = {
 export default meta;
 type Story = StoryObj<typeof Input>;
 
+/**
+ * Default text input for general purpose data entry.
+ * This variant serves as the foundation for all other input types.
+ */
 export const Default: Story = {
   args: {
     placeholder: 'Enter text here',
   },
 };
 
+/**
+ * Email input optimized for collecting email addresses.
+ * On supporting devices, this will show an email-specific keyboard.
+ */
 export const Email: Story = {
   args: {
     type: 'email',
@@ -64,6 +90,10 @@ export const Email: Story = {
   },
 };
 
+/**
+ * Password input that masks characters for secure entry.
+ * The content is hidden from view for privacy and security.
+ */
 export const Password: Story = {
   args: {
     type: 'password',
@@ -71,6 +101,10 @@ export const Password: Story = {
   },
 };
 
+/**
+ * Number input for collecting numerical data.
+ * Typically shows number-specific keyboard on mobile devices.
+ */
 export const Number: Story = {
   args: {
     type: 'number',
@@ -78,6 +112,10 @@ export const Number: Story = {
   },
 };
 
+/**
+ * Input in a disabled state that prevents user interaction.
+ * Used for form fields that are not currently available.
+ */
 export const Disabled: Story = {
   args: {
     disabled: true,
@@ -85,12 +123,20 @@ export const Disabled: Story = {
   },
 };
 
+/**
+ * Input with pre-filled content.
+ * Useful for forms with default values or when editing existing data.
+ */
 export const WithValue: Story = {
   args: {
     defaultValue: 'This is a pre-filled value',
   },
 };
 
+/**
+ * Required input that must be filled before form submission.
+ * Part of form validation patterns to ensure data completeness.
+ */
 export const Required: Story = {
   args: {
     required: true,
@@ -98,6 +144,10 @@ export const Required: Story = {
   },
 };
 
+/**
+ * Input with an associated label for improved accessibility.
+ * Labels provide context about what data should be entered.
+ */
 export const WithLabel: Story = {
   render: (args) => (
     <div className="space-y-2">
@@ -113,6 +163,10 @@ export const WithLabel: Story = {
   },
 };
 
+/**
+ * Different size variants of the input component.
+ * Allows for flexible integration in various UI contexts.
+ */
 export const Sizes: Story = {
   render: () => (
     <div className="space-y-4">
@@ -132,6 +186,10 @@ export const Sizes: Story = {
   ),
 };
 
+/**
+ * Input showing an error state with feedback message.
+ * Used to indicate validation problems and guide users to correct them.
+ */
 export const WithError: Story = {
   render: () => (
     <div className="space-y-2">
@@ -144,6 +202,10 @@ export const WithError: Story = {
   ),
 };
 
+/**
+ * File input for uploading files and documents.
+ * Allows users to select files from their device.
+ */
 export const FileInput: Story = {
   args: {
     type: 'file',
@@ -151,6 +213,10 @@ export const FileInput: Story = {
   },
 };
 
+/**
+ * Input with a decorative icon to provide additional context.
+ * Icons help users understand the purpose of the input field.
+ */
 export const WithIcon: Story = {
   render: () => (
     <div className="relative">

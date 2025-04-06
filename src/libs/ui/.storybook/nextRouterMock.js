@@ -22,6 +22,6 @@ export function useRouter() {
   };
 }
 
-export default {
+export default mockRouter = {
   useRouter,
 };

@@ -23,12 +23,16 @@ if [ -f "src/libs/ui/src/lib/ui/$COMPONENT_NAME.tsx" ]; then
   # Move the component to the correct location
   mv src/libs/ui/src/lib/ui/$COMPONENT_NAME.tsx src/libs/ui/src/lib/$COMPONENT_NAME/$COMPONENT_NAME.tsx
   
+  # Create barrel export file
+  echo "export * from './$COMPONENT_NAME';" > src/libs/ui/src/lib/$COMPONENT_NAME/index.ts
+  
   # Remove the ui directory if it's empty
   if [ -z "$(ls -A src/libs/ui/src/lib/ui)" ]; then
     rm -rf src/libs/ui/src/lib/ui
   fi
   
   echo "Component $COMPONENT_NAME has been installed and moved to the correct location."
+  echo "Created barrel export file at src/libs/ui/src/lib/$COMPONENT_NAME/index.ts"
 else
   echo "Component was not found in the expected location."
   exit 1

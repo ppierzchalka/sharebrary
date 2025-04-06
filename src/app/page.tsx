@@ -1,11 +1,12 @@
 import { BookCard, Input, Pagination, Sidebar } from '@/ui';
-import { Search } from 'lucide-react';
+import { Filter, Search } from 'lucide-react';
 import { BOOKS, CATEGORIES, TAGS } from '../constants/library';
 
 export default function HomePage() {
   return (
     <div className="flex-grow container mx-auto px-4 py-8 flex">
-      <Sidebar categories={CATEGORIES} tags={TAGS} />
+      <Sidebar categories={CATEGORIES} tags={TAGS} mobileIcon={<Filter />} />
+
       <main className="flex-grow">
         <div className="mb-6">
           <div className="relative">
@@ -17,7 +18,7 @@ export default function HomePage() {
             />
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {BOOKS.map((book, index) => (
             <BookCard key={index} {...book} />
           ))}

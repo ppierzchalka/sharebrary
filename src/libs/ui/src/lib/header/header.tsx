@@ -1,15 +1,15 @@
 'use client';
 
-import { Button } from '../button/button';
+import { Button } from '../button';
 import { Menu, LucideIcon } from 'lucide-react';
-import { Sheet, SheetContent, SheetTrigger } from '../sheet/sheet';
+import { Sheet, SheetContent, SheetTrigger } from '../sheet';
 import { useState } from 'react';
 import {
   NavigationMenu,
   NavigationMenuList,
   NavigationMenuItem,
   NavigationMenuLink,
-} from '../navigation-menu/navigation-menu';
+} from '../navigation-menu';
 import { cn } from '../utils';
 import Image, { StaticImageData } from 'next/image';
 import React from 'react';

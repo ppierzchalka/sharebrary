@@ -1,32 +1,84 @@
 import { render, screen } from '@testing-library/react';
-import { Pagination } from './pagination';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+  PaginationEllipsis,
+} from './pagination';
 
-describe.skip('Pagination', () => {
-  it('renders navigation buttons', () => {
-    render(<Pagination />);
+describe('Pagination', () => {
+  it('renders a basic pagination component', () => {
+    render(
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious href="#" />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink href="#" isActive>
+              1
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink href="#">2</PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink href="#">3</PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationNext href="#" />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+    );
+
     expect(screen.getByText('Previous')).toBeInTheDocument();
     expect(screen.getByText('Next')).toBeInTheDocument();
-  });
-
-  it('renders page numbers', () => {
-    render(<Pagination />);
     expect(screen.getByText('1')).toBeInTheDocument();
     expect(screen.getByText('2')).toBeInTheDocument();
     expect(screen.getByText('3')).toBeInTheDocument();
   });
 
-  it('applies correct styling classes', () => {
-    const { container } = render(<Pagination />);
-    const paginationContainer = container.firstChild;
-    expect(paginationContainer).toHaveClass('mt-8', 'flex', 'justify-center');
+  it('applies correct aria attributes', () => {
+    render(
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious href="#" />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink href="#" isActive>
+              1
+            </PaginationLink>
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+    );
+
+    const nav = screen.getByRole('navigation');
+    expect(nav).toHaveAttribute('aria-label', 'pagination');
+
+    const activeLink = screen.getByText('1').closest('a');
+    expect(activeLink).toHaveAttribute('aria-current', 'page');
+
+    const prevLink = screen.getByText('Previous').closest('a');
+    expect(prevLink).toHaveAttribute('aria-label', 'Go to previous page');
   });
 
-  it('applies outline variant to all buttons', () => {
-    render(<Pagination />);
-    const buttons = screen.getAllByRole('button');
+  it('renders ellipsis correctly', () => {
+    render(
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+    );
 
-    buttons.forEach((button) => {
-      expect(button).toHaveAttribute('data-variant', 'outline');
-    });
+    expect(screen.getByText('More pages')).toBeInTheDocument();
   });
 });

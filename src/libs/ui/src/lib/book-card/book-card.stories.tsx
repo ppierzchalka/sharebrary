@@ -1,9 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { BookCard } from './book-card';
 
+/**
+ * The BookCard component displays book information in a visually appealing card format.
+ *
+ * It presents essential book details including:
+ * - Cover image
+ * - Title
+ * - Author name
+ * - Tags or genres
+ * - Description or summary
+ *
+ * This component is designed to provide consistent book display across the Sharebrary application,
+ * with responsive behavior and truncation for longer text to maintain a clean layout.
+ */
 const meta: Meta<typeof BookCard> = {
   component: BookCard,
-  title: 'Components/BookCard',
+  title: 'Custom Components/BookCard',
   tags: ['autodocs'],
   decorators: [
     (Story) => (
@@ -26,10 +39,18 @@ const defaultArgs = {
     'Between life and death there is a library, and within that library, the shelves go on forever.',
 };
 
+/**
+ * Standard book card with all essential information.
+ * Shows the typical display for a book with cover image, title, author, tags, and a short description.
+ */
 export const Default: Story = {
   args: defaultArgs,
 };
 
+/**
+ * Book card with an extended description that demonstrates text truncation.
+ * Shows how the component handles longer text while maintaining a consistent card size.
+ */
 export const LongDescription: Story = {
   args: {
     ...defaultArgs,
@@ -38,6 +59,11 @@ export const LongDescription: Story = {
   },
 };
 
+/**
+ * Book card with numerous tags showing how tag overflow is handled.
+ * Demonstrates the component's ability to display multiple genres or categories
+ * while maintaining a clean, organized layout through truncation or wrapping.
+ */
 export const ManyTags: Story = {
   args: {
     ...defaultArgs,

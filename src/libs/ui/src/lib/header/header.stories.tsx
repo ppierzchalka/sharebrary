@@ -6,8 +6,8 @@ import {
   NavigationMenuList,
   NavigationMenuItem,
   NavigationMenuLink,
-} from '../navigation-menu/navigation-menu';
-import { Button } from '../button/button';
+} from '../navigation-menu';
+import { Button } from '../button';
 
 /**
  * The Header component serves as the main navigation bar for the Sharebrary application.
@@ -18,10 +18,17 @@ import { Button } from '../button/button';
  * 2. Pass custom navigation components through `children` prop for complete control
  *
  * The Header component can display either a text title or an image logo.
+ *
+ * Key features:
+ * - Fully responsive design that adapts to desktop and mobile views
+ * - Supports both simple text title and various logo formats
+ * - Configurable navigation items with icons, text, and custom styling
+ * - Mobile-friendly slide-out navigation drawer with hamburger menu
+ * - Support for custom link components (Next.js Link, React Router Link, etc.)
  */
 const meta: Meta<typeof Header> = {
   component: Header,
-  title: 'Components/Header',
+  title: 'Custom Components/Header',
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen', // This makes the header take full width in Storybook
@@ -67,6 +74,11 @@ const navigationItems: NavigationItem[] = [
 
 /**
  * Default view of the header component with text title.
+ *
+ * This variant uses a simple text-based title, making it easy to implement without
+ * requiring any image assets. The text inherits the primary color from the theme.
+ * Navigation items are provided as an array, with each item having an icon, text label,
+ * and styling variant.
  */
 export const WithTextTitle: Story = {
   args: {
@@ -83,6 +95,12 @@ export const WithTextTitle: Story = {
 
 /**
  * Header with an image logo instead of text title.
+ *
+ * This variant uses an image as the logo rather than plain text, useful for
+ * branded applications with an existing logo. The image size is controlled by
+ * width and height props, and will be displayed with proper alt text for accessibility.
+ * The title is still provided as a fallback for screen readers or cases where
+ * the image fails to load.
  */
 export const WithImageLogo: Story = {
   args: {
@@ -105,6 +123,11 @@ export const WithImageLogo: Story = {
 
 /**
  * Header with custom SVG logo.
+ *
+ * This variant demonstrates using an inline SVG as the logo, which allows
+ * for dynamic color changes based on the theme and smooth scaling at any resolution.
+ * The SVG is provided directly in the JSX, allowing for customization through
+ * CSS classes and creating a modern, dynamic logo presentation.
  */
 export const WithCustomSVGLogo: Story = {
   args: {
@@ -159,6 +182,12 @@ export const WithCustomSVGLogo: Story = {
 
 /**
  * Example of how to use custom link components (like Next.js Link component).
+ *
+ * This variant demonstrates integration with routing libraries by providing
+ * custom link components for each navigation item. In a real application,
+ * these would be replaced with the appropriate framework-specific components
+ * like Next.js <Link> or React Router's <Link> to enable client-side navigation.
+ * Each link also includes proper aria-labels for accessibility.
  */
 export const WithCustomLinkComponents: Story = {
   args: {
@@ -239,7 +268,12 @@ export const WithCustomLinkComponents: Story = {
 
 /**
  * Example showing how to use the children prop for complete customization.
- * Note that this example does not use dropdown navigation as per requirements.
+ *
+ * This variant demonstrates maximum flexibility by using the children prop
+ * to pass in completely custom navigation components. Instead of using the
+ * built-in navigation system, it directly injects a NavigationMenu component
+ * with custom structure. This approach gives you full control over the navigation
+ * layout, styling, and behavior while maintaining the header's overall structure.
  */
 export const WithCustomChildren: Story = {
   args: {
@@ -300,6 +334,12 @@ export const WithCustomChildren: Story = {
 
 /**
  * Mobile view of the header showing the hamburger menu.
+ *
+ * This variant demonstrates the responsive design of the Header component when
+ * viewed on mobile devices. The navigation items collapse into a hamburger menu
+ * that expands into a side drawer when tapped. This ensures the navigation
+ * remains accessible on smaller screens without consuming valuable space.
+ * The mobile view is automatically applied based on screen width breakpoints.
  */
 export const Mobile: Story = {
   args: {
