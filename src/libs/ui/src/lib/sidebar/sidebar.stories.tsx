@@ -5,6 +5,39 @@ const meta: Meta<typeof Sidebar> = {
   component: Sidebar,
   title: 'Custom Components/Sidebar',
   tags: ['autodocs'],
+  parameters: {
+    docs: {
+      description: {
+        component: `
+A sidebar component for filtering and navigation. It supports both link-based navigation and callback-based interactions.
+
+## Features
+- Categories with optional subcategories
+- Tag filtering
+- Mobile responsive with sheet interface
+- Clear filters functionality
+
+## Interaction Patterns
+- Category/subcategory names act as links (with underline on hover) or buttons when callbacks provided
+- Categories with subcategories have a square expand/collapse button with chevron
+- Links use underline hover effect for better accessibility
+- Tags can be clicked for filtering
+- Mobile view provides a slide-out sheet
+
+## Usage
+- Use \`onCategoryChange\`, \`onSubcategoryChange\`, \`onTagToggle\` callbacks for controlled behavior
+- Omit callbacks to use link-based navigation with URL parameters
+- Provide \`baseUrl\` to customize the base path for links
+
+## Styling
+- Links have hover underline effect with proper offset
+- Active items are highlighted in primary color
+- Expand/collapse buttons use a square border style
+- Subcategories use muted text color for better hierarchy
+`,
+      },
+    },
+  },
 };
 
 export default meta;
@@ -24,6 +57,17 @@ const defaultArgs = {
 
 export const Default: Story = {
   args: defaultArgs,
+};
+
+export const WithCallbacks: Story = {
+  args: {
+    ...defaultArgs,
+    onCategoryChange: (category: string | null) =>
+      console.log('Category:', category),
+    onSubcategoryChange: (subcategory: string | null) =>
+      console.log('Subcategory:', subcategory),
+    onTagToggle: (tag: string) => console.log('Tag:', tag),
+  },
 };
 
 export const NoSubcategories: Story = {
@@ -57,10 +101,7 @@ export const ManyTags: Story = {
 /**
  * This story showcases how the sidebar can handle deeply nested category structures.
  * It demonstrates a real-world example where categories can have multiple levels of subcategories,
- * each of which can be expanded/collapsed independently.
- *
- * The recursive rendering allows for any depth of nesting, making the sidebar component
- * suitable for complex categorization systems like those found in large digital libraries.
+ * each of which can be expanded/collapsed independently using the + icon buttons.
  */
 export const DeepNestedCategories: Story = {
   args: {

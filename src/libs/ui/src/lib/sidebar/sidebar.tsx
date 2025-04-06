@@ -10,7 +10,7 @@ import {
 import { Badge } from '../badge/badge';
 import { ScrollArea } from '../scroll-area';
 import { Separator } from '../separator';
-import { Menu } from 'lucide-react';
+import { Menu, Plus, Minus } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '../sheet/sheet';
 import { useState, useEffect } from 'react';
 import { Button } from '../button';
@@ -147,23 +147,24 @@ export function Sidebar({
         <li
           key={category.name}
           className={`py-1 text-sm ${
-            isSelected ? 'text-primary font-medium' : 'hover:text-primary'
+            isSelected ? 'text-primary font-medium' : ''
           }`}
         >
           {onCategoryChange ? (
-            <span
-              className="cursor-pointer"
+            <button
+              className="cursor-pointer w-full text-left hover:text-primary"
               onClick={() => {
                 handleCategoryClick(category.name);
                 if (isMobile) setSheetOpen(false);
               }}
+              aria-label={`${category.name} category`}
             >
               {category.name}
-            </span>
+            </button>
           ) : (
             <Link
               href={createCategoryUrl(category.name) || '#'}
-              className="cursor-pointer"
+              className="cursor-pointer block hover:text-primary underline-offset-4 hover:underline"
               onClick={() => isMobile && setSheetOpen(false)}
             >
               {category.name}
@@ -180,27 +181,28 @@ export function Sidebar({
         value={category.name}
         className="border-b-0"
       >
-        <div className="flex items-center">
+        <div className="flex items-center justify-between gap-2">
           {/* Category link/button part */}
           <div
             className={`flex-1 py-2 text-sm ${
-              isSelected ? 'text-primary font-medium' : 'hover:text-primary'
+              isSelected ? 'text-primary font-medium' : ''
             }`}
           >
             {onCategoryChange ? (
-              <span
-                className="cursor-pointer"
+              <button
+                className="cursor-pointer w-full text-left hover:text-primary"
                 onClick={() => {
                   handleCategoryClick(category.name);
                   if (isMobile) setSheetOpen(false);
                 }}
+                aria-label={`${category.name} category`}
               >
                 {category.name}
-              </span>
+              </button>
             ) : (
               <Link
                 href={createCategoryUrl(category.name) || '#'}
-                className="cursor-pointer"
+                className="cursor-pointer block hover:text-primary underline-offset-4 hover:underline"
                 onClick={() => isMobile && setSheetOpen(false)}
               >
                 {category.name}
@@ -208,8 +210,22 @@ export function Sidebar({
             )}
           </div>
 
-          {/* Accordion trigger as a separate element */}
-          <AccordionTrigger className="py-0 hover:no-underline"></AccordionTrigger>
+          {/* Square button with chevron */}
+          <AccordionTrigger
+            className="py-0 hover:no-underline flex h-8 w-8 items-center justify-center rounded-md border border-input hover:bg-accent hover:text-accent-foreground"
+            data-testid={`${category.name}-expand-button`}
+          >
+            <button
+              type="button"
+              data-testid={`${category.name}-expand-trigger`}
+              className="p-0 flex items-center justify-center w-full h-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <span className="sr-only">
+                Toggle {category.name} subcategories
+              </span>
+            </button>
+          </AccordionTrigger>
         </div>
 
         <AccordionContent>
@@ -225,25 +241,24 @@ export function Sidebar({
                     <li
                       key={sub}
                       className={`text-sm py-1 ${
-                        isSubSelected
-                          ? 'text-primary font-medium'
-                          : 'text-muted-foreground hover:text-primary'
+                        isSubSelected ? 'text-primary font-medium' : ''
                       }`}
                     >
                       {onSubcategoryChange ? (
-                        <span
-                          className="cursor-pointer"
+                        <button
+                          className="cursor-pointer w-full text-left text-muted-foreground hover:text-primary"
                           onClick={() => {
                             handleSubcategoryClick(sub);
                             if (isMobile) setSheetOpen(false);
                           }}
+                          aria-label={`${sub} subcategory`}
                         >
                           {sub}
-                        </span>
+                        </button>
                       ) : (
                         <Link
                           href={createCategoryUrl(category.name, sub) || '#'}
-                          className="cursor-pointer"
+                          className="cursor-pointer block text-muted-foreground hover:text-primary underline-offset-4 hover:underline"
                           onClick={() => isMobile && setSheetOpen(false)}
                         >
                           {sub}
@@ -309,7 +324,13 @@ export function Sidebar({
                 onClick={() => handleTagClick(tag)}
               >
                 {onTagToggle ? (
-                  tag
+                  <button
+                    className="w-full text-left"
+                    onClick={() => handleTagClick(tag)}
+                    aria-label={`${tag} tag`}
+                  >
+                    {tag}
+                  </button>
                 ) : (
                   <Link
                     href={createTagUrl(tag) || '#'}

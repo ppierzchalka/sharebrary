@@ -34,6 +34,15 @@ export default defineConfig({
       reportsDirectory: './coverage',
       provider: 'v8',
     },
+    testTimeout: 10000,
+    hookTimeout: 10000,
+    teardownTimeout: 5000,
+    pool: 'threads',
+    poolOptions: {
+      threads: {
+        singleThread: true,
+      },
+    },
   },
   resolve: {
     alias: {

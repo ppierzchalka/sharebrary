@@ -1,13 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import userEvent from '@testing-library/user-event';
 import {
   NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+} from './navigation-menu';
+import {
   NavigationMenuContent,
   NavigationMenuIndicator,
-  NavigationMenuItem,
   NavigationMenuLink,
-  NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from './navigation-menu';

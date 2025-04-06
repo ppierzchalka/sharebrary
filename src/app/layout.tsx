@@ -1,5 +1,5 @@
 import '@/ui/styles/global.css';
-import { inter } from '@/ui';
+import { inter, Footer } from '@/ui';
 import ClientHeader from './client-header';
 
 export const metadata = {
@@ -20,9 +20,13 @@ export default function RootLayout({
           <main className="flex-1 container mx-auto px-4 pt-20 pb-4">
             {children}
           </main>
-          <footer className="border-t py-4 text-center text-sm text-muted-foreground">
-            made with <span className="text-primary">♥</span> by przemo
-          </footer>
+          <Footer
+            content={
+              <>
+                made with <span className="text-primary">♥</span> by przemo
+              </>
+            }
+          />
         </div>
       </body>
     </html>

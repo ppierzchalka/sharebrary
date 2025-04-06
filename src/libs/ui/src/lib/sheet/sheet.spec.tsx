@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEach, afterEach, vi } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as React from 'react';
 import {
@@ -20,9 +20,7 @@ beforeEach(() => {
   // Mock animation duration to be shorter for tests
   vi.spyOn(window, 'getComputedStyle').mockImplementation(
     () =>
-      ({
-        getPropertyValue: () => '0.01s',
-      } as any)
+      ({ getPropertyValue: () => '0.01s' } as unknown as CSSStyleDeclaration)
   );
 });
 

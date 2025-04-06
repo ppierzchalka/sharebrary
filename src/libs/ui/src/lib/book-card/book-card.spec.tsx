@@ -1,7 +1,7 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BookCard } from './book-card';
-import { expect, describe, it } from 'vitest';
+import { expect, describe, it, vi, beforeEach, afterEach } from 'vitest';
 
 const mockProps = {
   cover: '/test-cover.jpg',
@@ -13,6 +13,14 @@ const mockProps = {
 };
 
 describe('BookCard', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    vi.resetAllMocks();
+  });
+
   it('renders all book information correctly', () => {
     render(<BookCard {...mockProps} />);
 
@@ -112,20 +120,19 @@ describe('BookCard', () => {
     expect(description).toHaveClass('text-sm');
   });
 
-  // Add test for interactive elements if applicable
   it('handles user interactions correctly', async () => {
     const user = userEvent.setup();
     const onClick = vi.fn();
-
-    // Render with a click handler to test interaction
     const { container } = render(
       <div onClick={onClick}>
         <BookCard {...mockProps} />
       </div>
     );
 
-    // Click on the card
     await user.click(container.firstChild as HTMLElement);
-    expect(onClick).toHaveBeenCalledTimes(1);
+
+    await waitFor(() => {
+      expect(onClick).toHaveBeenCalledTimes(1);
+    });
   });
 });

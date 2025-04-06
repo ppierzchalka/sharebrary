@@ -15,7 +15,7 @@
         "name": "next"
       }
     ],
-    "types": ["jest", "node", "@testing-library/jest-dom"],
+    "types": ["node", "@testing-library/jest-dom", "vitest", "vitest/globals"],
     "paths": {
       "@/ui": ["src/libs/ui/src/index.ts"],
       "@/ui/*": ["src/libs/ui/src/*"]

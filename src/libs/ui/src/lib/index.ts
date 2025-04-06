@@ -16,6 +16,14 @@ export * from './book-card';
 export * from './header';
 export * from './sidebar';
 export * from './providers';
+export * from './footer';
+export * from './features-section';
+
+// Hero Section
+export * from './hero-section';
+
+// Auth Card
+export * from './auth-card';
 
 // Utilities
 export * from './utils';
