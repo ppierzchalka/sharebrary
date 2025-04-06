@@ -160,48 +160,33 @@ describe('Sheet Component', () => {
     });
   });
 
-  it.skip('should close when clicking overlay', async () => {
-    // Skip the actual DOM test and just verify the Sheet's API works correctly
-    // This is cleaner than fighting with jsdom and animation timing
+  it('should close when clicking overlay', async () => {
+    // Create a spy to track when onOpenChange is called
+    const onOpenChangeSpy = vi.fn();
+    const user = userEvent.setup();
 
-    // Create a mock Sheet component that will verify our functionality
-    const TestSheet = () => {
-      const [open, setOpen] = React.useState(true);
-
-      // This will be triggered when the overlay is clicked properly
-      const handleOpenChange = (isOpen: boolean) => {
-        setOpen(isOpen);
-      };
-
-      return (
-        <Sheet open={open} onOpenChange={handleOpenChange}>
-          <SheetContent>
-            <div data-testid="sheet-content">Sheet Content</div>
-          </SheetContent>
-        </Sheet>
-      );
-    };
-
-    const { getByTestId, queryByTestId } = render(<TestSheet />);
+    render(
+      <Sheet open={true} onOpenChange={onOpenChangeSpy}>
+        <SheetContent data-testid="sheet-content">
+          <div>Sheet Content</div>
+        </SheetContent>
+      </Sheet>
+    );
 
     // Verify content is initially visible
-    expect(getByTestId('sheet-content')).toBeInTheDocument();
+    expect(screen.getByTestId('sheet-content')).toBeInTheDocument();
 
-    // Find the overlay element
-    const overlay = document.querySelector(
-      'div[class*="fixed inset-0 z-50 bg-black"]'
-    );
+    // Find the overlay element - the SheetOverlay is rendered directly in the DOM
+    // and has specific styling classes
+    const overlay = document.querySelector('.fixed.inset-0.z-50.bg-black\\/80');
     expect(overlay).not.toBeNull();
 
+    // Use userEvent instead of fireEvent for more realistic interaction
     if (overlay) {
-      // Trigger click on the overlay
-      fireEvent.click(overlay);
+      await user.click(overlay);
 
-      // Wait a bit for the React state update
-      await new Promise((resolve) => setTimeout(resolve, 0));
-
-      // The sheet content should now be hidden
-      expect(queryByTestId('sheet-content')).not.toBeInTheDocument();
+      // Verify onOpenChange was called with false
+      expect(onOpenChangeSpy).toHaveBeenCalledWith(false);
     }
   });
 });
