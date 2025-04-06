@@ -1,44 +1,61 @@
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { Input } from './input';
 
-describe('Input', () => {
-  it('renders correctly', () => {
-    render(<Input placeholder="Test placeholder" />);
-    expect(screen.getByPlaceholderText('Test placeholder')).toBeInTheDocument();
+describe('Input Component', () => {
+  it('renders correctly with default props', () => {
+    render(<Input placeholder="Default input" />);
+    const input = screen.getByPlaceholderText('Default input');
+    expect(input).toBeInTheDocument();
+    expect(input).toHaveAttribute('type', 'text'); // Default type
   });
 
-  it('applies custom className', () => {
-    render(<Input className="custom-class" />);
-    expect(screen.getByRole('textbox')).toHaveClass('custom-class');
+  it('applies custom className correctly', () => {
+    render(<Input className="custom-class" data-testid="custom-input" />);
+    const input = screen.getByTestId('custom-input');
+    expect(input).toHaveClass('custom-class');
   });
 
   it('handles different input types', () => {
-    render(<Input type="email" />);
-    expect(screen.getByRole('textbox')).toHaveAttribute('type', 'email');
+    render(<Input type="email" data-testid="email-input" />);
+    const input = screen.getByTestId('email-input');
+    expect(input).toHaveAttribute('type', 'email');
+  });
+
+  it('accepts and handles user input', async () => {
+    const user = userEvent.setup();
+    render(<Input data-testid="input-field" />);
+
+    const input = screen.getByTestId('input-field');
+    await user.type(input, 'Hello, world!');
+
+    expect(input).toHaveValue('Hello, world!');
+  });
+
+  it('applies disabled state correctly', () => {
+    render(<Input disabled data-testid="disabled-input" />);
+    const input = screen.getByTestId('disabled-input');
+    expect(input).toBeDisabled();
   });
 
   it('forwards ref correctly', () => {
-    const ref = vi.fn();
-    render(<Input ref={ref} />);
-    expect(ref).toHaveBeenCalled();
+    const ref = React.createRef<HTMLInputElement>();
+    render(<Input ref={ref} data-testid="ref-input" />);
+
+    expect(ref.current).not.toBeNull();
+    expect(ref.current).toBe(screen.getByTestId('ref-input'));
   });
 
-  it('handles disabled state', () => {
-    render(<Input disabled />);
-    expect(screen.getByRole('textbox')).toBeDisabled();
-  });
+  it('passes other props to the input element', () => {
+    render(
+      <Input data-testid="props-input" aria-label="Test input" maxLength={10} />
+    );
 
-  it('handles value changes', async () => {
-    const handleChange = vi.fn();
-    render(<Input onChange={handleChange} />);
-
-    const input = screen.getByRole('textbox');
-    await userEvent.type(input, 'test');
-
-    expect(handleChange).toHaveBeenCalled();
-    expect(input).toHaveValue('test');
+    const input = screen.getByTestId('props-input');
+    expect(input).toHaveAttribute('aria-label', 'Test input');
+    expect(input).toHaveAttribute('maxLength', '10');
   });
 
   it('handles focus and blur events', () => {
