@@ -5,6 +5,13 @@ const meta: Meta<typeof BookCard> = {
   component: BookCard,
   title: 'Components/BookCard',
   tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <div className="max-w-[240px]">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;

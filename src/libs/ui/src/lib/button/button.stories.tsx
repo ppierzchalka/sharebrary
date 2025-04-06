@@ -10,18 +10,18 @@ const meta: Meta<typeof Button> = {
 export default meta;
 type Story = StoryObj<typeof Button>;
 
-export const Primary: Story = {
+export const Default: Story = {
   args: {
-    variant: 'primary',
-    size: 'md',
-    children: 'Primary Button',
+    variant: 'default',
+    size: 'default',
+    children: 'Default Button',
   },
 };
 
 export const Secondary: Story = {
   args: {
     variant: 'secondary',
-    size: 'md',
+    size: 'default',
     children: 'Secondary Button',
   },
 };

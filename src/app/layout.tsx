@@ -1,5 +1,6 @@
 import '@/ui/styles/global.css';
-import { Header, inter } from '@/ui';
+import { inter } from '@/ui';
+import ClientHeader from './client-header';
 
 export const metadata = {
   title: 'Welcome to sharebrary',
@@ -15,8 +16,10 @@ export default function RootLayout({
     <html lang="en" className={inter.variable}>
       <body>
         <div className="min-h-screen bg-background text-foreground flex flex-col">
-          <Header />
-          {children}
+          <ClientHeader />
+          <main className="flex-1 container mx-auto px-4 pt-20 pb-4">
+            {children}
+          </main>
           <footer className="border-t py-4 text-center text-sm text-muted-foreground">
             made with <span className="text-primary">♥</span> by przemo
           </footer>

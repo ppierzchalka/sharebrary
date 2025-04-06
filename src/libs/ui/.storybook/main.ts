@@ -32,7 +32,17 @@ const config: StorybookConfig = {
             __dirname,
             '../../../../tailwind.config.js'
           ),
+          // Add alias for next/image
+          'next/image': path.resolve(__dirname, './nextImageMock.js'),
+          'next/router': path.resolve(__dirname, './nextRouterMock.js'),
         },
+      },
+      define: {
+        // Add any environment variables needed by Next.js components
+        'process.env': {},
+        'import.meta.env.NEXT_PUBLIC_DOMAIN': JSON.stringify(
+          'http://localhost:3000'
+        ),
       },
       optimizeDeps: {
         include: ['react', 'react-dom'],

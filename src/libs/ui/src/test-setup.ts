@@ -17,6 +17,8 @@ vi.mock('next/image', () => ({
 // Mock Lucide icons
 vi.mock('lucide-react', () => {
   return {
+    X: () => React.createElement('span', { 'data-testid': 'x-icon' }),
+    Menu: () => React.createElement('span', { 'data-testid': 'menu-icon' }),
     BookOpen: () => React.createElement('span', { 'data-testid': 'book-icon' }),
     Heart: () => React.createElement('span', { 'data-testid': 'heart-icon' }),
     Calendar: () =>

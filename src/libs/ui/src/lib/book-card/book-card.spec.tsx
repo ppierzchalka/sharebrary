@@ -44,11 +44,10 @@ describe('BookCard', () => {
   it('applies correct styling classes', () => {
     const { container } = render(<BookCard {...mockProps} />);
     expect(container.firstChild).toHaveClass(
+      'rounded-lg',
       'bg-card',
       'text-card-foreground',
-      'rounded-lg',
-      'overflow-hidden',
-      'shadow-md'
+      'overflow-hidden'
     );
   });
 });
