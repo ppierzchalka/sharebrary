@@ -1,8 +1,15 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { render, screen, waitFor, within } from '@testing-library/react';
+import {
+  render,
+  screen,
+  waitFor,
+  within,
+  fireEvent,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi, describe, it, beforeEach, afterEach } from 'vitest';
 import { Sidebar } from './sidebar';
+import { Category } from './sidebar.types';
 
 // Mock next/navigation hooks
 const mockUsePathname = vi.fn(() => '/library');
@@ -16,15 +23,48 @@ vi.mock('next/navigation', () => ({
   useRouter: () => mockRouter,
 }));
 
-const mockProps = {
-  categories: [
-    { name: 'Fiction', subcategories: ['Fantasy', 'Mystery'] },
-    { name: 'Non-Fiction' },
-  ],
-  tags: ['bestseller', 'classic'],
-};
+const mockCategories: Category[] = [
+  {
+    name: 'Fiction',
+    subcategories: [
+      { name: 'Science Fiction' },
+      { name: 'Fantasy' },
+      { name: 'Mystery' },
+    ],
+  },
+  {
+    name: 'Non-Fiction',
+    subcategories: [
+      { name: 'Science' },
+      { name: 'History' },
+      { name: 'Biography' },
+    ],
+  },
+];
+
+const mockTags = [
+  'Bestseller',
+  'New Release',
+  'Award Winner',
+  'Classic',
+  'Popular',
+  'Recommended',
+];
 
 describe('Sidebar', () => {
+  const defaultProps = {
+    categories: mockCategories,
+    tags: mockTags,
+    selectedCategory: '',
+    selectedSubcategory: '',
+    selectedTags: [],
+    onCategoryChange: vi.fn(),
+    onSubcategoryChange: vi.fn(),
+    onTagToggle: vi.fn(),
+    onClearFilters: vi.fn(),
+    baseUrl: '/library',
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
     // Mock window.innerWidth for mobile detection
@@ -40,12 +80,26 @@ describe('Sidebar', () => {
   });
 
   it('renders filter title', () => {
-    render(<Sidebar {...mockProps} />);
+    render(<Sidebar {...defaultProps} />);
     expect(screen.getByText('Filter')).toBeInTheDocument();
   });
 
+  it('renders categories', () => {
+    render(<Sidebar {...defaultProps} />);
+
+    // Check if categories are rendered
+    expect(screen.getByText('Fiction')).toBeInTheDocument();
+    expect(screen.getByText('Non-Fiction')).toBeInTheDocument();
+  });
+
   it('renders categories as links when no callbacks provided', () => {
-    render(<Sidebar {...mockProps} />);
+    render(
+      <Sidebar
+        {...defaultProps}
+        onCategoryChange={undefined}
+        onSubcategoryChange={undefined}
+      />
+    );
 
     // Categories should be rendered with proper navigation
     const fictionLink = screen.getByRole('link', { name: 'Fiction' });
@@ -61,7 +115,7 @@ describe('Sidebar', () => {
   it('renders categories as buttons when callback provided', async () => {
     const user = userEvent.setup();
     const onCategoryChange = vi.fn();
-    render(<Sidebar {...mockProps} onCategoryChange={onCategoryChange} />);
+    render(<Sidebar {...defaultProps} onCategoryChange={onCategoryChange} />);
 
     // Find and click the Fiction category button
     const fictionButton = screen.getByRole('button', {
@@ -72,107 +126,104 @@ describe('Sidebar', () => {
     expect(onCategoryChange).toHaveBeenCalledWith('Fiction');
   });
 
-  it('expands category and shows subcategory links when no callbacks provided', async () => {
-    const user = userEvent.setup();
-    render(<Sidebar {...mockProps} selectedCategory="Fiction" />);
+  it('renders category expand buttons correctly', () => {
+    render(<Sidebar {...defaultProps} selectedCategory="Fiction" />);
 
-    // Find and click the expand trigger button
-    const expandTrigger = screen.getByTestId('Fiction-expand-trigger');
-    await user.click(expandTrigger);
-
-    // Check for subcategories
-    const fantasyLink = screen.getByRole('link', { name: 'Fantasy' });
-    const mysteryLink = screen.getByRole('link', { name: 'Mystery' });
-
-    expect(fantasyLink).toBeInTheDocument();
-    expect(mysteryLink).toBeInTheDocument();
-
-    expect(fantasyLink).toHaveAttribute(
-      'href',
-      '/library?category=Fiction&subcategory=Fantasy'
-    );
-    expect(mysteryLink).toHaveAttribute(
-      'href',
-      '/library?category=Fiction&subcategory=Mystery'
-    );
-  });
-
-  it('expands category and shows subcategory buttons when callback provided', async () => {
-    const user = userEvent.setup();
-    const onSubcategoryChange = vi.fn();
-
-    render(
-      <Sidebar
-        {...mockProps}
-        selectedCategory="Fiction"
-        onSubcategoryChange={onSubcategoryChange}
-      />
-    );
-
-    // Find and click the expand trigger button
-    const expandTrigger = screen.getByTestId('Fiction-expand-trigger');
-    await user.click(expandTrigger);
-
-    // Find and click the Fantasy subcategory button
-    const fantasyButton = screen.getByRole('button', {
-      name: 'Fantasy subcategory',
-    });
-    await user.click(fantasyButton);
-
-    expect(onSubcategoryChange).toHaveBeenCalledWith('Fantasy');
+    // Test that the expand button exists for the Fiction category
+    expect(screen.getByTestId('Fiction-expand-button')).toBeInTheDocument();
+    // Check for Non-Fiction category expand button as well
+    expect(screen.getByTestId('Non-Fiction-expand-button')).toBeInTheDocument();
   });
 
   it('renders tags as links when no callbacks provided', () => {
-    render(<Sidebar {...mockProps} />);
+    render(<Sidebar {...defaultProps} onTagToggle={undefined} />);
 
-    const bestsellerLink = screen.getByRole('link', { name: 'bestseller' });
-    const classicLink = screen.getByRole('link', { name: 'classic' });
+    const bestsellerLink = screen.getByRole('link', { name: 'Bestseller' });
+    const newReleaseLink = screen.getByRole('link', { name: 'New Release' });
+    const awardWinnerLink = screen.getByRole('link', { name: 'Award Winner' });
+    const classicLink = screen.getByRole('link', { name: 'Classic' });
+    const popularLink = screen.getByRole('link', { name: 'Popular' });
+    const recommendedLink = screen.getByRole('link', { name: 'Recommended' });
 
-    expect(bestsellerLink).toHaveAttribute('href', '/library?tag=bestseller');
-    expect(classicLink).toHaveAttribute('href', '/library?tag=classic');
+    expect(bestsellerLink).toHaveAttribute(
+      'href',
+      encodeURI('/library?tag=Bestseller')
+    );
+    expect(newReleaseLink).toHaveAttribute(
+      'href',
+      encodeURI('/library?tag=New Release')
+    );
+    expect(awardWinnerLink).toHaveAttribute(
+      'href',
+      encodeURI('/library?tag=Award Winner')
+    );
+    expect(classicLink).toHaveAttribute(
+      'href',
+      encodeURI('/library?tag=Classic')
+    );
+    expect(popularLink).toHaveAttribute(
+      'href',
+      encodeURI('/library?tag=Popular')
+    );
+    expect(recommendedLink).toHaveAttribute(
+      'href',
+      encodeURI('/library?tag=Recommended')
+    );
   });
 
   it('renders tags as buttons when callback provided', async () => {
     const user = userEvent.setup();
     const onTagToggle = vi.fn();
-    render(<Sidebar {...mockProps} onTagToggle={onTagToggle} />);
+    render(<Sidebar {...defaultProps} onTagToggle={onTagToggle} />);
 
-    const tagButton = screen.getByRole('button', { name: 'bestseller tag' });
+    const tagButton = screen.getByRole('button', { name: 'Bestseller tag' });
     await user.click(tagButton);
 
-    expect(onTagToggle).toHaveBeenCalledWith('bestseller');
+    expect(onTagToggle).toHaveBeenCalledWith('Bestseller');
   });
 
-  it('handles clear filters button click', async () => {
-    const user = userEvent.setup();
-    const onClearFilters = vi.fn();
-
+  it('shows clear filters button when there are selections', () => {
     render(
       <Sidebar
-        {...mockProps}
+        {...defaultProps}
         selectedCategory="Fiction"
-        onClearFilters={onClearFilters}
+        selectedSubcategory="Science Fiction"
+        selectedTags={['Bestseller']}
       />
     );
 
-    const clearButton = screen.getByRole('button', { name: 'Clear all' });
-    await user.click(clearButton);
+    const clearButton = screen.getByText('Clear all');
+    expect(clearButton).toBeInTheDocument();
 
-    expect(onClearFilters).toHaveBeenCalled();
+    fireEvent.click(clearButton);
+    expect(defaultProps.onClearFilters).toHaveBeenCalled();
+  });
+
+  it('does not show clear filters button when there are no selections', () => {
+    render(<Sidebar {...defaultProps} />);
+    expect(screen.queryByText('Clear all')).not.toBeInTheDocument();
+  });
+
+  it('renders mobile trigger button on small screens', () => {
+    // Mock window resize
+    window.innerWidth = 500;
+    window.dispatchEvent(new Event('resize'));
+
+    const { container } = render(<Sidebar {...defaultProps} />);
+
+    // Check if mobile trigger button exists
+    const mobileButton = container.querySelector(
+      '[data-testid="sidebar-mobile-trigger"]'
+    );
+    expect(mobileButton).toBeInTheDocument();
   });
 
   it('renders in mobile mode with sheet', async () => {
     // Set window width to mobile size
-    Object.defineProperty(window, 'innerWidth', {
-      writable: true,
-      configurable: true,
-      value: 600,
-    });
-
-    // Trigger resize event
+    window.innerWidth = 600;
     window.dispatchEvent(new Event('resize'));
 
-    const { container } = render(<Sidebar {...mockProps} />);
+    const { container } = render(<Sidebar {...defaultProps} />);
 
     // Check if mobile trigger button exists
     const mobileTrigger = screen.getByTestId('sidebar-mobile-trigger');

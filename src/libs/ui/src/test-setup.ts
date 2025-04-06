@@ -50,24 +50,27 @@ vi.mock('next/image', () => ({
 // Mock Next.js Link component
 vi.mock('next/link', () => ({
   __esModule: true,
-  default: function MockLink({
-    children,
-    href,
-    ...props
-  }: React.ComponentPropsWithoutRef<'a'> & { href: string }) {
-    return React.createElement(
-      'a',
-      {
-        ...props,
-        href,
-        onClick: (e: React.MouseEvent<HTMLAnchorElement>) => {
-          e.preventDefault();
-          props.onClick?.(e as React.MouseEvent<HTMLAnchorElement>);
-        },
+  default: function MockLink(props: React.ComponentPropsWithoutRef<'a'>) {
+    return React.createElement('a', {
+      ...props,
+      onClick: (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        props.onClick?.(e);
       },
-      children
-    );
+    });
   },
+}));
+
+// Mock Next.js navigation hooks
+vi.mock('next/navigation', () => ({
+  usePathname: () => '/library',
+  useSearchParams: () => new URLSearchParams(),
+  useRouter: () => ({
+    push: vi.fn(),
+    replace: vi.fn(),
+    back: vi.fn(),
+    forward: vi.fn(),
+  }),
 }));
 
 // Mock Lucide icons - use specific mocks instead of generic proxy

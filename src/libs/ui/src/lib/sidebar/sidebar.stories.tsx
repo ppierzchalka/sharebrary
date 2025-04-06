@@ -1,179 +1,198 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Sidebar } from './sidebar';
+import { Category } from './sidebar.types';
 
-const meta: Meta<typeof Sidebar> = {
+const mockCategories: Category[] = [
+  {
+    name: 'Fiction',
+    subcategories: [
+      { name: 'Science Fiction' },
+      { name: 'Fantasy' },
+      { name: 'Mystery' },
+    ],
+  },
+  {
+    name: 'Non-Fiction',
+    subcategories: [
+      { name: 'Science' },
+      { name: 'History' },
+      { name: 'Biography' },
+    ],
+  },
+];
+
+const mockTags = [
+  'Bestseller',
+  'New Release',
+  'Award Winner',
+  'Classic',
+  'Popular',
+  'Recommended',
+];
+
+const deepNestedCategories: Category[] = [
+  {
+    name: 'Fiction',
+    subcategories: [
+      {
+        name: 'Fantasy',
+        subcategories: [
+          { name: 'Epic Fantasy' },
+          { name: 'Urban Fantasy' },
+          {
+            name: 'Young Adult',
+            subcategories: [
+              { name: 'Coming of Age' },
+              { name: 'School Life' },
+              { name: 'Dystopian' },
+            ],
+          },
+          { name: 'Magical Realism' },
+        ],
+      },
+      {
+        name: 'Science Fiction',
+        subcategories: [
+          { name: 'Space Opera' },
+          { name: 'Cyberpunk' },
+          {
+            name: 'Speculative Fiction',
+            subcategories: [
+              { name: 'Alternate History' },
+              { name: 'Post-Apocalyptic' },
+              { name: 'Time Travel' },
+            ],
+          },
+        ],
+      },
+      { name: 'Mystery' },
+      { name: 'Romance' },
+    ],
+  },
+  {
+    name: 'Non-Fiction',
+    subcategories: [
+      { name: 'Biography' },
+      {
+        name: 'Science',
+        subcategories: [
+          { name: 'Physics' },
+          { name: 'Biology' },
+          {
+            name: 'Technology',
+            subcategories: [
+              { name: 'Programming' },
+              { name: 'Artificial Intelligence' },
+              { name: 'Digital Culture' },
+            ],
+          },
+          { name: 'Mathematics' },
+        ],
+      },
+      {
+        name: 'History',
+        subcategories: [
+          { name: 'Ancient' },
+          { name: 'Medieval' },
+          { name: 'Modern' },
+          { name: 'Contemporary' },
+        ],
+      },
+      { name: 'Philosophy' },
+    ],
+  },
+  {
+    name: 'Academic',
+    subcategories: [
+      { name: 'Journals' },
+      { name: 'Papers' },
+      { name: 'Dissertations' },
+    ],
+  },
+];
+
+const meta = {
   component: Sidebar,
   title: 'Custom Components/Sidebar',
-  tags: ['autodocs'],
   parameters: {
-    docs: {
-      description: {
-        component: `
-A sidebar component for filtering and navigation. It supports both link-based navigation and callback-based interactions.
+    layout: 'centered',
+  },
+  tags: ['autodocs'],
+} satisfies Meta<typeof Sidebar>;
 
-## Features
-- Categories with optional subcategories
-- Tag filtering
-- Mobile responsive with sheet interface
-- Clear filters functionality
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-## Interaction Patterns
-- Category/subcategory names act as links (with underline on hover) or buttons when callbacks provided
-- Categories with subcategories have a square expand/collapse button with chevron
-- Links use underline hover effect for better accessibility
-- Tags can be clicked for filtering
-- Mobile view provides a slide-out sheet
-
-## Usage
-- Use \`onCategoryChange\`, \`onSubcategoryChange\`, \`onTagToggle\` callbacks for controlled behavior
-- Omit callbacks to use link-based navigation with URL parameters
-- Provide \`baseUrl\` to customize the base path for links
-
-## Styling
-- Links have hover underline effect with proper offset
-- Active items are highlighted in primary color
-- Expand/collapse buttons use a square border style
-- Subcategories use muted text color for better hierarchy
-`,
-      },
-    },
+export const Default: Story = {
+  args: {
+    categories: mockCategories,
+    tags: mockTags,
+    selectedCategory: '',
+    selectedSubcategory: '',
+    selectedTags: [],
+    baseUrl: '/library',
   },
 };
 
-export default meta;
-type Story = StoryObj<typeof Sidebar>;
-
-const defaultArgs = {
-  categories: [
-    {
-      name: 'Fiction',
-      subcategories: ['Fantasy', 'Science Fiction', 'Mystery'],
-    },
-    { name: 'Non-Fiction', subcategories: ['Biography', 'History', 'Science'] },
-    { name: 'Poetry' },
-  ],
-  tags: ['bestseller', 'classic', 'award-winning', 'new-release'],
-};
-
-export const Default: Story = {
-  args: defaultArgs,
+export const WithSelections: Story = {
+  args: {
+    categories: mockCategories,
+    tags: mockTags,
+    selectedCategory: 'Fiction',
+    selectedSubcategory: 'Science Fiction',
+    selectedTags: ['Bestseller', 'New Release'],
+    baseUrl: '/library',
+  },
 };
 
 export const WithCallbacks: Story = {
   args: {
-    ...defaultArgs,
-    onCategoryChange: (category: string | null) =>
-      console.log('Category:', category),
-    onSubcategoryChange: (subcategory: string | null) =>
+    categories: mockCategories,
+    tags: mockTags,
+    selectedCategory: '',
+    selectedSubcategory: '',
+    selectedTags: [],
+    onCategoryChange: (category) => console.log('Category:', category),
+    onSubcategoryChange: (subcategory) =>
       console.log('Subcategory:', subcategory),
-    onTagToggle: (tag: string) => console.log('Tag:', tag),
+    onTagToggle: (tag) => console.log('Tag:', tag),
+    onClearFilters: () => console.log('Clear filters'),
+    baseUrl: '/library',
   },
 };
 
-export const NoSubcategories: Story = {
-  args: {
-    categories: [
-      { name: 'Fiction' },
-      { name: 'Non-Fiction' },
-      { name: 'Poetry' },
-    ],
-    tags: defaultArgs.tags,
-  },
-};
-
-export const ManyTags: Story = {
-  args: {
-    categories: defaultArgs.categories,
-    tags: [
-      'bestseller',
-      'classic',
-      'award-winning',
-      'new-release',
-      'romance',
-      'thriller',
-      'mystery',
-      'historical',
-      'contemporary',
-    ],
-  },
-};
-
-/**
- * This story showcases how the sidebar can handle deeply nested category structures.
- * It demonstrates a real-world example where categories can have multiple levels of subcategories,
- * each of which can be expanded/collapsed independently using the + icon buttons.
- */
 export const DeepNestedCategories: Story = {
   args: {
-    categories: [
-      {
-        name: 'Fiction',
-        subcategories: [
-          {
-            name: 'Fantasy',
-            subcategories: [
-              { name: 'Epic Fantasy' },
-              { name: 'Urban Fantasy' },
-              {
-                name: 'Young Adult',
-                subcategories: ['Coming of Age', 'School Life', 'Dystopian'],
-              },
-              { name: 'Magical Realism' },
-            ],
-          },
-          {
-            name: 'Science Fiction',
-            subcategories: [
-              { name: 'Space Opera' },
-              { name: 'Cyberpunk' },
-              {
-                name: 'Speculative Fiction',
-                subcategories: [
-                  'Alternate History',
-                  'Post-Apocalyptic',
-                  'Time Travel',
-                ],
-              },
-            ],
-          },
-          { name: 'Mystery' },
-          { name: 'Romance' },
-        ],
-      },
-      {
-        name: 'Non-Fiction',
-        subcategories: [
-          { name: 'Biography' },
-          {
-            name: 'Science',
-            subcategories: [
-              { name: 'Physics' },
-              { name: 'Biology' },
-              {
-                name: 'Technology',
-                subcategories: [
-                  'Programming',
-                  'Artificial Intelligence',
-                  'Digital Culture',
-                ],
-              },
-              { name: 'Mathematics' },
-            ],
-          },
-          {
-            name: 'History',
-            subcategories: ['Ancient', 'Medieval', 'Modern', 'Contemporary'],
-          },
-          { name: 'Philosophy' },
-        ],
-      },
-      {
-        name: 'Academic',
-        subcategories: ['Journals', 'Papers', 'Dissertations'],
-      },
-    ],
-    tags: ['bestseller', 'classic', 'award-winning'],
+    categories: deepNestedCategories,
+    tags: mockTags,
     selectedCategory: 'Fiction',
+    selectedSubcategory: 'Fantasy',
+    selectedTags: ['Bestseller'],
     baseUrl: '/library',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: `This story showcases how the sidebar can handle deeply nested category structures.
+        It demonstrates a real-world example where categories can have multiple levels of subcategories,
+        each of which can be expanded/collapsed independently.`,
+      },
+    },
+  },
+};
+
+export const Mobile: Story = {
+  args: {
+    categories: mockCategories,
+    tags: mockTags,
+    selectedCategory: '',
+    selectedSubcategory: '',
+    selectedTags: [],
+    baseUrl: '/library',
+  },
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
 };
